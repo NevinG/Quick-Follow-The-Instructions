@@ -1,27 +1,12 @@
-#shape1{
-    width: 50px;
-    height: 50px;
-    color:pink;
+/* *{
+    border:1px solid black;
+} */
+html{
+    overflow: hidden;
 }
-#shape2{
-    width: 200px;
-    height: 70px;
-    background-color: blueviolet;
+.physics{
+    transform: translateX(-50%) translateY(-50%);
 }
-#shape3{
-    width:50px;
-    height: 50x;
-    background-color: black;
-    border-radius: 50%;
-}
-#shape4{
-    width: 250px;
-    height: 250px;
-    background-color: beige;
-    border-radius: 25px;
-}
-#shape5{
-    height: 200px;
-    width: 50px;
-    border-radius: 25px;
+.title{
+    font-size: 4rem;
 }
