@@ -192,7 +192,8 @@ let instruction13History = "";
 
 let instructionsCompleteLabel = document.getElementById("instructions-complete");
 let title = document.getElementById("title");
-let audio = new Audio('instruction-complete-sound.mp3');
+let completeAudio = new Audio('instruction-complete-sound.mp3');
+let incompleteAudio = new Audio('instruction-incomplete-sound.mp3');
 let gameOver = false;
 
 let instructionsComplete = 1;
@@ -607,9 +608,9 @@ function updateInstructionCount(i, beep = true){
             break;
         case 16:
             instruction16.innerHTML = instruction16.innerText.replace(
-                '1', '<span class="no" style="color:green; font-weight: bold;">1</span>').replace(
-                '6', '<span class="no" style="color:green; font-weight: bold;">6</span>').replace(
-                '.', '<span class="no" style="color:green; font-weight: bold;">.</span>')
+                '1', '<span class="no hide" style="color:green; font-weight: bold;">1</span>').replace(
+                '6', '<span class="no hide" style="color:green; font-weight: bold;">6</span>').replace(
+                '.', '<span class="no hide" style="color:green; font-weight: bold;">.</span>')
             break;
         case 17:
             instruction17.children[0].style.color = beep ? "green" : "black";
@@ -629,15 +630,30 @@ function updateInstructionCount(i, beep = true){
             break;
     }
 
-    if(beep)
-        audio.play();
-
+    if(beep){
+        if (completeAudio.paused) {
+            completeAudio.play();
+        }else{
+            completeAudio.currentTime = 0
+        }
+    }else{
+        if (incompleteAudio.paused) {
+            incompleteAudio.play();
+        }else{
+            incompleteAudio.currentTime = 0
+        }
+    }
     instructionsCompleteLabel.innerText = `Instructions Complete ${instructionsComplete}/20`;
     if(instructionsComplete == 20){
-        console.log("GAME OVER");
         gameOver = true;
-        const encodedTime = encodeURIComponent(btoa(time));
-        window.location.href = `winner?t=${encodedTime}`;
+        const encodedTime = encodeURIComponent(btoa(timeElapsed.toFixed(1)));
+        let highscoreTime = JSON.parse(localStorage.getItem("highscore"));
+        if(highscoreTime == null || timeElapsed < parseFloat(highscoreTime)){
+            highscoreTime = timeElapsed.toFixed(1);
+            localStorage.setItem("highscore", JSON.stringify(highscoreTime));
+        }
+        const encodedHighscore = encodeURIComponent(btoa(highscoreTime));
+        window.location.href = `winner?t=${encodedTime}&h=${encodedHighscore}`;
     }
 }
 
@@ -662,9 +678,9 @@ function flipLightSwitch(){
         instruction16.innerHTML = instruction16TextOptions[Math.min(flipLightSwitchCount,9)]
         if(instruction16Count > 9){
             instruction16.innerHTML = instruction16.innerText.replace(
-                '1', '<span class="no" style="color:green; font-weight: bold;">1</span>').replace(
-                '6', '<span class="no" style="color:green; font-weight: bold;">6</span>').replace(
-                '.', '<span class="no" style="color:green; font-weight: bold;">.</span>');
+                '1', '<span class="no hide" style="color:green; font-weight: bold;">1</span>').replace(
+                '6', '<span class="no hide" style="color:green; font-weight: bold;">6</span>').replace(
+                '.', '<span class="no hide" style="color:green; font-weight: bold;">.</span>');
         }
             
         document.body.style.backgroundColor = "black";

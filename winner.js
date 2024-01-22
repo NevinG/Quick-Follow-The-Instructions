@@ -1,14 +1,18 @@
 const urlParams = new URLSearchParams(window.location.search);
 const timeElement = document.getElementById("time");
+const highscoreElement = document.getElementById("highscore");
 const shareLink = document.getElementById("share-link");
 const copyLink = document.getElementById("copy-link");
 
 const time = atob(decodeURIComponent(urlParams.get('t')));
+const highscore = atob(decodeURIComponent(urlParams.get('h')));
 timeElement.innerText = time;
+highscoreElement.innerText = highscore;
 
 const encodedTime = encodeURIComponent(btoa(time));
-shareLink.innerText = `shareGame.html?t=${encodedTime}`;
-shareLink.href = `shareGame.html?t=${encodedTime}`;
+const link = `https://neving.github.io/Quick-Follow-The-Instructions/shareGame?t=${encodedTime}`;
+shareLink.innerText = link;
+shareLink.href = link;
 
 copyLink.onclick = () => {
     copyToClipboard();
@@ -16,5 +20,5 @@ copyLink.onclick = () => {
 }
 
 function copyToClipboard(){
-    navigator.clipboard.writeText(`shareGame.html?t=${encodedTime}`);
+    navigator.clipboard.writeText(link);
 }
